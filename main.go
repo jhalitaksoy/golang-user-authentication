@@ -2,9 +2,9 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -23,10 +23,15 @@ func main() {
 
 func startServer(port string) {
 	mainRouter := gin.Default()
+	mainRouter.Use(cors.Default()) //Change later
+	mainRouter.GET("/", handleMainRoute)
 
-	mainRouter.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello")
-	})
+	mainRouter.POST("/register", handleRegister)
+	mainRouter.POST("/login", handleLogin)
+
+	privateRoute := mainRouter.Group("/private")
+	privateRoute.Use(requiredAuthentication)
+	privateRoute.GET("/", handlePrivateMainRoute)
 
 	mainRouter.Run(port)
 }
