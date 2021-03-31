@@ -1,6 +1,11 @@
 package main
 
-import "net/http"
+import (
+	"log"
+	"net/http"
+
+	"golang.org/x/crypto/bcrypt"
+)
 
 var userStore UserStore = newUserStore()
 
@@ -21,6 +26,11 @@ func newUserStore() *UserStoreImpl {
 }
 
 func (userStore *UserStoreImpl) Register(user *User) int {
+	err := hashAndSaltUserPassword(user)
+	if err != nil {
+		log.Printf("An error occured while hashing password , error : %v\n", err)
+		return http.StatusInternalServerError
+	}
 	for _, eachUser := range userStore.Users {
 		if eachUser.Name == user.Name {
 			return http.StatusConflict
@@ -32,8 +42,16 @@ func (userStore *UserStoreImpl) Register(user *User) int {
 
 func (userStore *UserStoreImpl) Login(user *User) (int, string) {
 	for _, eachUser := range userStore.Users {
-		if eachUser.Name == user.Name && eachUser.Password == user.Password {
-			return http.StatusOK, eachUser.ID
+		if eachUser.Name == user.Name {
+			hash := []byte(eachUser.Password)
+			plainText := []byte(user.Password)
+			err := bcrypt.CompareHashAndPassword(hash, plainText)
+			if err != nil {
+				return http.StatusConflict, ""
+			} else {
+				return http.StatusOK, eachUser.ID
+			}
+
 		}
 	}
 	return http.StatusConflict, ""
