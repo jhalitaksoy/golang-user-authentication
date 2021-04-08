@@ -19,3 +19,14 @@ Step 4)
     Install crypto
 
     go get -u golang.org/x/crypto/...
+
+Step 5) 
+    Install JWT
+
+    go get github.com/dgrijalva/jwt-go
+
+## .env File
+
+You have to set SECRET_KEY in .env file.
+
+    SECRET_KEY=your_long_secret_key

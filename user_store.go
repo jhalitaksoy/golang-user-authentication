@@ -49,12 +49,21 @@ func (userStore *UserStoreImpl) Login(user *User) (int, string) {
 			if err != nil {
 				return http.StatusConflict, ""
 			} else {
-				return http.StatusOK, eachUser.ID
+				jwt := userStore.CreateJWTToken(eachUser)
+				return http.StatusOK, jwt
 			}
 
 		}
 	}
 	return http.StatusConflict, ""
+}
+
+func (userStore *UserStoreImpl) CreateJWTToken(user *User) string {
+	signedToken, err := CreateJWTToken(user)
+	if err != nil {
+		panic(err)
+	}
+	return signedToken
 }
 
 func (userStore *UserStoreImpl) AddUser(user User) {

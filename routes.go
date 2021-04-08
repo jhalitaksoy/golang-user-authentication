@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,5 +34,18 @@ func handleLogin(c *gin.Context) {
 }
 
 func handlePrivateMainRoute(c *gin.Context) {
+	claims, ok := c.Get("claims")
+	if !ok {
+		log.Println("claims not found")
+		return
+	}
+
+	jwtClaims, ok := claims.(jwtClaims)
+	if !ok {
+		log.Println("jwt claims not found")
+		return
+	}
+
+	c.String(http.StatusOK, jwtClaims.Username)
 
 }
