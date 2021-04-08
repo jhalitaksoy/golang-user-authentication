@@ -24,6 +24,11 @@ Step 5)
     Install JWT
 
     go get github.com/dgrijalva/jwt-go
+    
+Step 6) 
+    Install pg
+    
+    go get github.com/go-pg/pg/v10
 
 ## .env File
 

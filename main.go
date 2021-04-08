@@ -28,6 +28,10 @@ func main() {
 	if len(secretKey) == 0 {
 		panic("Secret key emty")
 	}
+
+	options := getDatabaseConnectionVariables()
+	initDatabase(options)
+
 	startServer(port)
 }
 
