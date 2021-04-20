@@ -12,24 +12,24 @@ func handleMainRoute(c *gin.Context) {
 }
 
 func handleRegister(c *gin.Context) {
-	var user User
-	err := c.BindJSON(&user)
+	var registerParameters RegisterParameters
+	err := c.BindJSON(&registerParameters)
 	if err != nil {
 		c.Status(http.StatusBadRequest)
 		return
 	}
-	statusCode := userStore.Register(&user)
+	statusCode := myContext.AuthService.Register(&registerParameters)
 	c.Status(statusCode)
 }
 
 func handleLogin(c *gin.Context) {
-	var user User
-	err := c.BindJSON(&user)
+	var loginParameters LoginParameters
+	err := c.BindJSON(&loginParameters)
 	if err != nil {
 		c.Status(http.StatusBadRequest)
 		return
 	}
-	statusCode, userID := userStore.Login(&user)
+	statusCode, userID := myContext.AuthService.Login(&loginParameters)
 	c.String(statusCode, userID)
 }
 

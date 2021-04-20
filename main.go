@@ -14,6 +14,8 @@ var secretKey string
 
 const jwtExpireTime = time.Hour * 24
 
+var myContext *MyContext
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -28,6 +30,8 @@ func main() {
 	if len(secretKey) == 0 {
 		panic("Secret key emty")
 	}
+
+	myContext = newMyContextForTest()
 
 	options := getDatabaseConnectionVariables()
 	initDatabase(options)

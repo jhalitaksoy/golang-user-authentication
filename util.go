@@ -4,11 +4,11 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func hashAndSaltUserPassword(user *User) error {
-	bytes, error := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
+func hashAndSaltPassword(password string) (string, error) {
+	bytes, error := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 	if error != nil {
-		return error
+		return "", error
 	}
-	user.Password = string(bytes)
-	return nil
+	hash := string(bytes)
+	return hash, nil
 }
