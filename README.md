@@ -1,37 +1,34 @@
-## Install Dependencies
+# Golang Simple User Authentication Example
 
-Step 1)
-    Install gin
+This project is simple User Authentication example that using JWT, password hash and PostgreSQL in golang.
 
-    go get -u github.com/gin-gonic/gin
-
-Step 2)
-    Install cors
-
-    get get -u github.com/gin-contrib/cors
-
-Step 3)
-    Install godotenv
-
-    go get -u github.com/joho/godotenv
-
-Step 4)
-    Install crypto
-
-    go get -u golang.org/x/crypto/...
-
-Step 5) 
-    Install JWT
-
-    go get github.com/dgrijalva/jwt-go
+## Clone Project
     
-Step 6) 
-    Install pg
-    
-    go get github.com/go-pg/pg/v10
+    git clone github.com/jhalitaksoy/golang-user-authentication
 
 ## .env File
 
-You have to set SECRET_KEY in .env file.
+You have to set Enviroment Variables in .env file.
 
-    SECRET_KEY=your_long_secret_key
+Example 
+
+    PORT=:4000
+    SECRET_KEY=rbmvsa34mvb948vs372vm9n2ş4jn32avnv
+    DB_ADDR=:5432
+    DB_USER=postgres
+    DB_PASSWORD=1234
+    DB_DATABASE=go-user-auth-demo
+
+## Dependencies
+
+    go get -u github.com/gin-gonic/gin
+
+    get get -u github.com/gin-contrib/cors
+
+    go get -u github.com/joho/godotenv
+
+    go get -u golang.org/x/crypto/...
+
+    go get github.com/dgrijalva/jwt-go
+    
+    go get github.com/go-pg/pg/v10

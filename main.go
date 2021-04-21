@@ -17,26 +17,28 @@ const jwtExpireTime = time.Hour * 24
 var myContext *MyContext
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Printf("Error : %v\n", err)
-	}
+	LoadEnviromentVariables()
+
+	myContext = newMyContext()
+
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
 		port = ":8080"
+	}
+
+	startServer(port)
+}
+
+func LoadEnviromentVariables() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Printf("Error : %v\n", err)
 	}
 
 	secretKey = os.Getenv("SECRET_KEY")
 	if len(secretKey) == 0 {
 		panic("Secret key emty")
 	}
-
-	myContext = newMyContextForTest()
-
-	options := getDatabaseConnectionVariables()
-	initDatabase(options)
-
-	startServer(port)
 }
 
 func CorsConfig() cors.Config {

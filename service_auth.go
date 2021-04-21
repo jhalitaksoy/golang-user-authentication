@@ -59,7 +59,7 @@ func (authService *AuthServiceImpl) Register(registerParameters *RegisterParamet
 
 	err = authService.GetPasswordStore().Create(user.ID, hash)
 	if err != nil {
-		log.Println(err)
+		log.Printf("An error occured when creating password : %v", err)
 		return http.StatusInternalServerError
 	}
 

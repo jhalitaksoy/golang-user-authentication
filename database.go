@@ -2,26 +2,15 @@ package main
 
 import (
 	"context"
-	"log"
 
 	"github.com/go-pg/pg"
 )
-
-var database *DataBase
 
 type DataBase struct {
 	DB *pg.DB
 }
 
-func initDatabase(options *pg.Options) {
-	db := CreateDatabaseConnection(options)
-	log.Println("Database init succes!")
-	database = &DataBase{
-		DB: db,
-	}
-}
-
-func CreateDatabaseConnection(options *pg.Options) *pg.DB {
+func CreateDatabaseConnection(options *pg.Options) *DataBase {
 	db := pg.Connect(options)
 
 	ctx := context.Background()
@@ -29,5 +18,7 @@ func CreateDatabaseConnection(options *pg.Options) *pg.DB {
 	if err != nil {
 		panic(err)
 	}
-	return db
+	return &DataBase{
+		DB: db,
+	}
 }
