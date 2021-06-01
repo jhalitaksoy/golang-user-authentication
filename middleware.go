@@ -48,7 +48,7 @@ func requiredAuthentication(context *gin.Context) {
 }
 
 type jwtClaims struct {
-	UserID   string `json:"userid"`
+	UserID   int    `json:"userid"`
 	Username string `json:"username"`
 	jwt.StandardClaims
 }

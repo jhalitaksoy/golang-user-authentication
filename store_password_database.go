@@ -7,7 +7,7 @@ import (
 )
 
 type Password struct {
-	UserID string
+	UserID int
 	Hash   string
 }
 
@@ -21,7 +21,7 @@ func newPasswordStoreDBImpl(DataBase *DataBase) *PasswordStoreDBImpl {
 	}
 }
 
-func (passwordStore *PasswordStoreDBImpl) Create(userID, hash string) error {
+func (passwordStore *PasswordStoreDBImpl) Create(userID int, hash string) error {
 	passwordStored := new(Password)
 	err := passwordStore.Database.DB.Model(passwordStored).Where("user_id = ?", userID).Select()
 	if err == pg.ErrNoRows {
@@ -43,7 +43,7 @@ func (passwordStore *PasswordStoreDBImpl) Create(userID, hash string) error {
 	}
 }
 
-func (passwordStore *PasswordStoreDBImpl) Get(userID string) *string {
+func (passwordStore *PasswordStoreDBImpl) Get(userID int) *string {
 	passwordStored := new(Password)
 	err := passwordStore.Database.DB.Model(passwordStored).Where("user_id = ?", userID).Select()
 	if err != nil {
@@ -52,7 +52,7 @@ func (passwordStore *PasswordStoreDBImpl) Get(userID string) *string {
 	return &passwordStored.Hash
 }
 
-func (passwordStore *PasswordStoreDBImpl) Update(userID, hash string) {
+func (passwordStore *PasswordStoreDBImpl) Update(userID int, hash string) {
 	password := &Password{
 		UserID: userID,
 		Hash:   hash,
@@ -64,7 +64,7 @@ func (passwordStore *PasswordStoreDBImpl) Update(userID, hash string) {
 	}*/
 }
 
-func (passwordStore *PasswordStoreDBImpl) Delete(userID string) {
+func (passwordStore *PasswordStoreDBImpl) Delete(userID int) {
 	_, _ = passwordStore.Database.DB.Model().Where("user_id = ?", userID).Delete()
 	/*if err != nil {
 		//todo return error

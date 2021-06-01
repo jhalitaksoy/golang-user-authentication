@@ -6,23 +6,23 @@ import (
 
 //PasswordStore ...
 type PasswordStore interface {
-	Create(userID, hash string) error
-	Get(userID string) *string
-	Update(userID, hash string)
-	Delete(userID string)
+	Create(userID int, hash string) error
+	Get(userID int) *string
+	Update(userID int, hash string)
+	Delete(userID int)
 }
 
 type PasswordStoreImpl struct {
-	Passwords map[string]*string
+	Passwords map[int]*string
 }
 
 func newPasswordStoreImpl() *PasswordStoreImpl {
 	return &PasswordStoreImpl{
-		Passwords: make(map[string]*string),
+		Passwords: make(map[int]*string),
 	}
 }
 
-func (passwordStore *PasswordStoreImpl) Create(userID, hash string) error {
+func (passwordStore *PasswordStoreImpl) Create(userID int, hash string) error {
 	passwordStored := passwordStore.Passwords[userID]
 	if passwordStored != nil {
 		return errors.New("there is a already password")
@@ -33,14 +33,14 @@ func (passwordStore *PasswordStoreImpl) Create(userID, hash string) error {
 	return nil
 }
 
-func (passwordStore *PasswordStoreImpl) Get(userID string) *string {
+func (passwordStore *PasswordStoreImpl) Get(userID int) *string {
 	return passwordStore.Passwords[userID]
 }
 
-func (passwordStore *PasswordStoreImpl) Update(userID, hash string) {
+func (passwordStore *PasswordStoreImpl) Update(userID int, hash string) {
 	passwordStore.Passwords[userID] = &hash
 }
 
-func (passwordStore *PasswordStoreImpl) Delete(userID string) {
+func (passwordStore *PasswordStoreImpl) Delete(userID int) {
 	passwordStore.Passwords[userID] = nil
 }

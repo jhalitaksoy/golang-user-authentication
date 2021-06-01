@@ -2,45 +2,44 @@ package main
 
 import (
 	"errors"
-	"fmt"
 )
 
 //UserStore ...
 type UserStore interface {
-	Create(user *User) error
-	GeById(id string) *User
+	Create(user *User) (int, error)
+	GeById(id int) *User
 	GetByName(name string) *User
 	Update(user *User)
-	Delete(id string)
+	Delete(id int)
 }
 
 type UserStoreImpl struct {
 	lastUserID int
-	Users      map[string]*User
+	Users      map[int]*User
 }
 
 func newUserStoreImpl() *UserStoreImpl {
 	return &UserStoreImpl{
 		lastUserID: -1,
-		Users:      make(map[string]*User),
+		Users:      make(map[int]*User),
 	}
 }
 
-func (userStore *UserStoreImpl) Create(user *User) error {
+func (userStore *UserStoreImpl) Create(user *User) (int, error) {
 	userStored := userStore.GetByName(user.Name)
 	if userStored != nil {
-		return errors.New("user name is not suitable")
+		return -1, errors.New("user name is not suitable")
 	}
 
 	id := userStore.createNewUserId()
 
-	user.ID = fmt.Sprint(id)
+	user.ID = id
 
 	userStore.Users[user.ID] = user
-	return nil
+	return id, nil
 }
 
-func (userStore *UserStoreImpl) GeById(id string) *User {
+func (userStore *UserStoreImpl) GeById(id int) *User {
 	return userStore.Users[id]
 }
 
@@ -58,7 +57,7 @@ func (userStore *UserStoreImpl) Update(user *User) {
 	userStore.Users[user.ID] = user
 }
 
-func (userStore *UserStoreImpl) Delete(id string) {
+func (userStore *UserStoreImpl) Delete(id int) {
 	userStore.Users[id] = nil
 }
 

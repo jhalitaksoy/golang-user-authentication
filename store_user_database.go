@@ -18,20 +18,21 @@ func newUserStoreDBImpl(db *DataBase) *UserStoreDBImpl {
 	}
 }
 
-func (userStore *UserStoreDBImpl) Create(user *User) error {
+func (userStore *UserStoreDBImpl) Create(user *User) (int, error) {
 	userStored := userStore.GetByName(user.Name)
 	if userStored != nil {
-		return errors.New("user name is not suitable")
+		return -1, errors.New("user name is not suitable")
 	}
 
 	_, err := userStore.DataBase.DB.Model(user).Insert()
 	if err != nil {
-		return err
+		return -1, err
 	}
-	return nil
+
+	return user.ID, nil
 }
 
-func (userStore *UserStoreDBImpl) GeById(id string) *User {
+func (userStore *UserStoreDBImpl) GeById(id int) *User {
 	user := new(User)
 	err := userStore.DataBase.DB.Model(user).Where("id = ?", id).Select()
 	if err == pg.ErrNoRows {
@@ -68,7 +69,7 @@ func (userStore *UserStoreDBImpl) Update(user *User) {
 	//todo : handle error (return)
 }
 
-func (userStore *UserStoreDBImpl) Delete(id string) {
+func (userStore *UserStoreDBImpl) Delete(id int) {
 	_, err := userStore.DataBase.DB.Model().Where("id = ?", id).Delete()
 
 	if err != nil {

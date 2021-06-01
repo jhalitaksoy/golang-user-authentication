@@ -47,7 +47,7 @@ func (authService *AuthServiceImpl) Register(registerParameters *RegisterParamet
 		return http.StatusInternalServerError
 	}
 
-	err = authService.GetUserStore().Create(&User{
+	_, err = authService.GetUserStore().Create(&User{
 		Name: registerParameters.Name,
 	})
 
