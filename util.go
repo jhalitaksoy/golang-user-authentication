@@ -12,3 +12,16 @@ func hashAndSaltPassword(password string) (string, error) {
 	hash := string(bytes)
 	return hash, nil
 }
+
+func checkStringsIsEmpty(strs ...string) bool {
+	for _, str := range strs {
+		if checkStringIsEmpty(str) {
+			return true
+		}
+	}
+	return false
+}
+
+func checkStringIsEmpty(str string) bool {
+	return len(str) == 0
+}
